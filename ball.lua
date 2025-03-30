@@ -13,6 +13,9 @@ function Ball:update(dt)
     if checkCollision(self, leftPaddle) or checkCollision(self, rightPaddle) then
         self.speedX = -self.speedX
 
+        -- Play collision sound
+        love.audio.play(collisionSound)
+
         -- Add a small offset to push the ball outside the paddle
         if self.speedX > 0 then
             self.x = self.x + 1

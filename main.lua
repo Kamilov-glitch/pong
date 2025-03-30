@@ -20,6 +20,8 @@ function love.load()
     rightPaddle = rectangle(windowWidth - 35, windowHeight/2 - 40, 15, 80)
 
     gameBall = ball(windowWidth/2, windowHeight/2, 10)
+
+    collisionSound = love.audio.newSource("assets/sounds/metal_hit.wav", "static")
 end
 
 function love.update(dt)

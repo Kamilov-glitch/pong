@@ -11,6 +11,8 @@ function love.load()
 
     local rectangle = require "rectangle"
     local ball = require "ball"
+
+    math.randomseed(os.time())
     
     windowWidth, windowHeight = love.graphics.getDimensions()
 
@@ -55,6 +57,8 @@ function love.keypressed(key)
             -- Reset ball position to center of screen
             gameBall.x = windowWidth/2
             gameBall.y = windowHeight/2
+            -- Randomize the ball direction
+            gameBall:randomizeDirection()
             -- Also eset paddle positions
             leftPaddle.y = windowHeight/2 - 40
             rightPaddle.y = windowHeight/2 - 40

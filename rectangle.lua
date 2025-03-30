@@ -5,7 +5,7 @@ function Rectangle:new(x, y, width, height)
     self.y = y
     self.width = width
     self.height = height
-    self.speed = 150
+    self.speed = 250
 end
 
 function Rectangle:update(dt)

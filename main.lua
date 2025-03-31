@@ -8,7 +8,8 @@ function love.load()
     Object = require "classic"
 
     gameState = "start"
-    score = 0
+    playerScore = 0
+    enemyScore = 0
 
     local player = require "player"
     local enemy = require "enemy"
@@ -31,9 +32,22 @@ function love.update(dt)
         leftPaddle:update(dt)
         rightPaddle:update(dt)
         gameBall:update(dt)
-        
-        -- Game over if ball goes past left or right edge
-        if gameBall.x < 0 or gameBall.x > windowWidth then
+
+        if gameBall.x < 0 then
+            playerScore = playerScore + 1
+            gameBall.x = windowWidth/2
+            gameBall.y = windowHeight/2
+            gameBall:randomizeDirection()
+        end
+
+        if gameBall.x > windowWidth then
+            enemyScore = enemyScore + 1
+            gameBall.x = windowWidth/2
+            gameBall.y = windowHeight/2
+            gameBall:randomizeDirection()
+        end
+
+        if playerScore == 10 or enemyScore == 10 then
             gameState = "gameover"
         end
     end
@@ -43,11 +57,28 @@ function love.draw()
     if gameState == "start" then
         love.graphics.print("Press Space to Start", 300, 250)
     elseif gameState == "playing" then
+        love.graphics.print("Enemy: " .. enemyScore, 50, 20)
+        love.graphics.print("Player: " .. playerScore, windowWidth - 150, 20)
         leftPaddle:draw()
         rightPaddle:draw()
         gameBall:draw()
     elseif gameState == "gameover" then
         love.graphics.print("Game Over", 250, 250)
+        love.graphics.print("Final Score: " .. playerScore .. " - " .. enemyScore, 250, 275)
+        local fontSize = 32
+        love.graphics.setFont(love.graphics.newFont(fontSize))
+        
+        if playerScore >= 10 then
+            love.graphics.setColor(0, 0, 1) -- Blue for player win
+            love.graphics.print("Player Wins!", windowWidth/2 - 100, 50)
+        elseif enemyScore >= 10 then
+            love.graphics.setColor(1, 0,0) -- Red for enemy win
+            love.graphics.print("Enemy Wins!", windowWidth/2 - 100, 50)
+        end
+        
+        -- Reset to default
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setFont(love.graphics.newFont(12)) -- Reset to default font
         love.graphics.print("Press Space to Restart", 250, 300)
     end
 end
@@ -66,6 +97,9 @@ function love.keypressed(key)
             -- Also eset paddle positions
             leftPaddle.y = windowHeight/2 - 40
             rightPaddle.y = windowHeight/2 - 40
+            -- Reset scores
+            playerScore = 0
+            enemyScore = 0
         end
     end
 end

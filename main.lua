@@ -8,16 +8,18 @@ function love.load()
     Object = require "classic"
 
     gameState = "start"
+    score = 0
 
-    local rectangle = require "rectangle"
+    local player = require "player"
+    local enemy = require "enemy"
     local ball = require "ball"
 
     math.randomseed(os.time())
     
     windowWidth, windowHeight = love.graphics.getDimensions()
 
-    leftPaddle = rectangle(20, windowHeight/2 - 40, 15, 80)
-    rightPaddle = rectangle(windowWidth - 35, windowHeight/2 - 40, 15, 80)
+    leftPaddle = enemy(20, windowHeight/2 - 40, 15, 80)
+    rightPaddle = player(windowWidth - 35, windowHeight/2 - 40, 15, 80)
 
     gameBall = ball(windowWidth/2, windowHeight/2, 10)
 
